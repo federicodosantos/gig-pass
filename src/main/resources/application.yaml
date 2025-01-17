@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: 'gig-pass'
+  datasource:
+    url: 'jdbc:postgresql://${POSTGRES_HOST}:5432/gig-pass-db'
+    username: '${POSTGRES_USER}'
+    password: '${POSTGRES_PASSWORD}'
+    driver-class-name: 'org.postgresql.Driver'
+  jpa:
+    properties:
+      hibernate:
+        dialect: 'org.hibernate.dialect.PostgreSQLDialect'
+  flyway:
+    locations: "classpath:db/migration"
+
+security:
+  jwt:
+    issuer: 'ddosantos'
+    secret-key: '${JWT_SECRET_KEY}'
+    expiry-time-in-seconds: 86400
