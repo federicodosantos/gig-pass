@@ -5,6 +5,7 @@ import com.ddosantos.gig.pass.dto.request.UserRegistrationDTO;
 import com.ddosantos.gig.pass.dto.response.UserLoginResponseDTO;
 import com.ddosantos.gig.pass.dto.response.UserRegistrationResponseDTO;
 import com.ddosantos.gig.pass.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,12 @@ public class UserController {
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<UserRegistrationResponseDTO> register(@Validated @RequestBody UserRegistrationDTO registrationDTO) {
+    public ResponseEntity<UserRegistrationResponseDTO> register(@RequestBody @Valid UserRegistrationDTO registrationDTO) {
         return new ResponseEntity<>(userService.register(registrationDTO), HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/login")
-    public ResponseEntity<UserLoginResponseDTO> login(@Validated @RequestBody UserLoginDTO loginDTO) {
+    public ResponseEntity<UserLoginResponseDTO> login(@RequestBody @Valid UserLoginDTO loginDTO) {
         return ResponseEntity.ok(userService.login(loginDTO));
     }
 }

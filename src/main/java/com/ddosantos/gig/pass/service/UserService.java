@@ -5,16 +5,24 @@ import com.ddosantos.gig.pass.dto.request.UserRegistrationDTO;
 import com.ddosantos.gig.pass.dto.response.UserLoginResponseDTO;
 import com.ddosantos.gig.pass.dto.response.UserRegistrationResponseDTO;
 import com.ddosantos.gig.pass.entity.User;
+import com.ddosantos.gig.pass.exception.EmailAlreadyExistException;
+import com.ddosantos.gig.pass.exception.ResourceNotFoundException;
+import com.ddosantos.gig.pass.exception.UnauthorizedException;
 import com.ddosantos.gig.pass.repository.UserRepository;
 import com.ddosantos.gig.pass.security.TokenProvider;
+import jakarta.persistence.NoResultException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
+@Slf4j
 @Service
 public class UserService implements IUserService {
     private final UserRepository userRepository;
@@ -37,6 +45,11 @@ public class UserService implements IUserService {
 
     @Override
     public UserRegistrationResponseDTO register(UserRegistrationDTO dto) {
+        User exists = userRepository.findUserByEmail(dto.getEmail());
+        if (exists != null) {
+            throw new EmailAlreadyExistException("This email: " + exists.getEmail() + " already exists");
+        }
+
         User user = new User();
         String hashpw = passwordEncoder.encode(dto.getPassword());
 
@@ -60,6 +73,11 @@ public class UserService implements IUserService {
     @Override
     public UserLoginResponseDTO login(UserLoginDTO loginDTO) {
         try {
+            // Check if email exists in the database
+            if (userRepository.findUserByEmail(loginDTO.getEmail()) == null) {
+                throw new ResourceNotFoundException("Email: " + loginDTO.getEmail() + " not found");
+            }
+
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginDTO.getEmail(),
@@ -72,8 +90,16 @@ public class UserService implements IUserService {
                     authentication.getName(),
                     jwtToken
             );
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+        } catch (BadCredentialsException ex) {
+            log.error("Bad credentials for email: {}", loginDTO.getEmail());
+            throw new UnauthorizedException("Invalid email or password");
+        } catch (ResourceNotFoundException ex) {
+            log.error("Resource not found: {}", ex.getMessage());
+            throw ex;
+        } catch (Exception e) {
+            log.error("Unexpected error occurred: {}", e.getMessage());
+            throw new RuntimeException("An unexpected error occurred", e);
         }
     }
+
 }

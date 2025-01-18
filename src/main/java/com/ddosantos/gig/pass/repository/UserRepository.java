@@ -2,6 +2,7 @@ package com.ddosantos.gig.pass.repository;
 
 import com.ddosantos.gig.pass.entity.User;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +23,15 @@ public class UserRepository implements IUserRepository{
 
     @Override
     public User findUserByEmail(String email) {
-        return entityManager.createQuery("SELECT u FROM User u WHERE u.email=:email",
-                User.class)
-                .setParameter("email", email)
-                .getSingleResult();
+        try {
+            return entityManager.createQuery("SELECT u FROM User u WHERE u.email=:email",
+                            User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+
+            return null;
+        }
+
     }
 }
