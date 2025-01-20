@@ -29,9 +29,7 @@ public class UserRepository implements IUserRepository{
                     .setParameter("email", email)
                     .getSingleResult();
         } catch (NoResultException e) {
-
             return null;
         }
-
     }
 }

@@ -10,13 +10,11 @@ import com.ddosantos.gig.pass.exception.ResourceNotFoundException;
 import com.ddosantos.gig.pass.exception.UnauthorizedException;
 import com.ddosantos.gig.pass.repository.UserRepository;
 import com.ddosantos.gig.pass.security.TokenProvider;
-import jakarta.persistence.NoResultException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

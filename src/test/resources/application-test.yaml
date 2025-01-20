@@ -2,21 +2,15 @@ spring:
   application:
     name: 'gig-pass'
   datasource:
-    url: 'jdbc:postgresql://${POSTGRES_HOST}:5432/gig-pass-db'
+    url: 'jdbc:postgresql://${POSTGRES_HOST}:5432/gig-pass-test-db'
     username: '${POSTGRES_USER}'
     password: '${POSTGRES_PASSWORD}'
     driver-class-name: 'org.postgresql.Driver'
   jpa:
     properties:
       hibernate:
+        ddl-auto: create
         dialect: 'org.hibernate.dialect.PostgreSQLDialect'
   flyway:
+    enabled: true
     locations: "classpath:db/migration"
-  profiles:
-    active: test
-
-security:
-  jwt:
-    issuer: 'ddosantos'
-    secret-key: '${JWT_SECRET_KEY}'
-    expiry-time-in-seconds: 86400
