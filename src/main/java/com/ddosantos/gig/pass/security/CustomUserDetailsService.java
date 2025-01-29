@@ -27,6 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             log.info("user not found: {}", emailParam);
             throw new UsernameNotFoundException("User with email: "+ emailParam+ " not found");
         }
+
         log.info("user found: {}", emailParam);
         String email = user.getEmail();
         String password = user.getPassword();
