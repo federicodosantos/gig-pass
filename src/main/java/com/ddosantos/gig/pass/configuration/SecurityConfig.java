@@ -18,7 +18,7 @@ public class SecurityConfig {
 
     private final TokenProvider tokenProvider;
 
-    public SecurityConfig(@Lazy TokenProvider tokenProvider) {
+    public SecurityConfig(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
     }
 
