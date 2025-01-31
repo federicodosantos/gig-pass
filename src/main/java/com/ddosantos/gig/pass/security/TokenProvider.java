@@ -28,10 +28,7 @@ public class TokenProvider {
     @Value("${security.jwt.expiry-time-in-seconds}")
     private Long expiryTimeInSeconds;
 
-    private final AuthenticationManager authenticationManager;
-
-    public TokenProvider(@Lazy AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
+    public TokenProvider() {
     }
 
     public String createToken(Authentication authentication) {
