@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clone source code
       - uses: actions/checkout@v4
 
       - name: Set up JDK 23
