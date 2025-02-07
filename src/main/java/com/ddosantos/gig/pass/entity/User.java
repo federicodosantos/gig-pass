@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -35,4 +36,10 @@ public class User {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDate updatedAt;
+
+    // relationship
+    @OneToMany(mappedBy = "user",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE,
+                    CascadeType.REFRESH})
+    private List<Order> orders;
 }
