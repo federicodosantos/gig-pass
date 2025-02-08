@@ -8,20 +8,18 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class UserRepository implements IUserRepository{
-    private EntityManager entityManager;
+public class UserRepository {
+    private final EntityManager entityManager;
 
     public UserRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    @Override
     @Transactional
     public void createUser(User user) {
         entityManager.persist(user);
     }
 
-    @Override
     public User findUserByEmail(String email) {
         try {
             return entityManager.createQuery("SELECT u FROM User u WHERE u.email=:email",

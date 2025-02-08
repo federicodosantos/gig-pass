@@ -22,7 +22,7 @@ import java.time.LocalDate;
 
 @Slf4j
 @Service
-public class UserService implements IUserService {
+public class UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -41,7 +41,6 @@ public class UserService implements IUserService {
         this.tokenProvider = tokenProvider;
     }
 
-    @Override
     public UserRegistrationResponseDTO register(UserRegistrationDTO dto) {
         User exists = userRepository.findUserByEmail(dto.getEmail());
         if (exists != null) {
@@ -68,7 +67,6 @@ public class UserService implements IUserService {
         );
     }
 
-    @Override
     public UserLoginResponseDTO login(UserLoginDTO loginDTO) {
         try {
             // Check if email exists in the database
